@@ -1,4 +1,6 @@
-import React from 'react';
+// CarDetailsScreen.js
+// 자동차 상세 화면 - 선택한 자동차의 전체 정보를 표시합니다.
+// 사양, 특징, 설명, 가격 등을 포함합니다.
 import {
   View,
   Text,
@@ -11,18 +13,22 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 
 const CarDetailsScreen = ({ route, navigation }) => {
+  // 전달된 자동차 데이터 추출
   const { car } = route.params;
-
+  // 예약 화면으로 이동하는 핸들러
   const handleBookNow = () => {
     navigation.navigate('Booking', { car });
   };
 
   return (
+
     <SafeAreaView style={styles.container}>
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image source={{ uri: car.image }} style={styles.carImage} />
 
         <View style={styles.content}>
+          {/* 자동차 기본 정보 - 이름, 모델, 종류, 등급 */}
           <View style={styles.header}>
             <View>
               <Text style={styles.carName}>{car.name}</Text>
@@ -33,11 +39,12 @@ const CarDetailsScreen = ({ route, navigation }) => {
             </View>
           </View>
 
+          {/* 가격 정보 */}
           <View style={styles.priceContainer}>
             <Text style={styles.priceLabel}>Price per day</Text>
             <Text style={styles.price}>${car.price}</Text>
           </View>
-
+          {/* 상세 정보 섹션 */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Description</Text>
             <Text style={styles.description}>{car.description}</Text>
@@ -45,14 +52,18 @@ const CarDetailsScreen = ({ route, navigation }) => {
 
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Specifications</Text>
+
+            {/* 승인원 */}
             <View style={styles.specRow}>
               <Text style={styles.specLabel}>Seats:</Text>
               <Text style={styles.specValue}>{car.seats}</Text>
             </View>
+            {/* 연료 종류 */}
             <View style={styles.specRow}>
               <Text style={styles.specLabel}>Fuel Type:</Text>
               <Text style={styles.specValue}>{car.fuel}</Text>
             </View>
+            {/* 변속기 종류 */}
             <View style={styles.specRow}>
               <Text style={styles.specLabel}>Transmission:</Text>
               <Text style={styles.specValue}>
@@ -60,7 +71,7 @@ const CarDetailsScreen = ({ route, navigation }) => {
               </Text>
             </View>
           </View>
-
+          {/* 특징 목록 */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Features</Text>
             <View style={styles.featuresGrid}>
@@ -73,7 +84,7 @@ const CarDetailsScreen = ({ route, navigation }) => {
           </View>
         </View>
       </ScrollView>
-
+      {/* 예약 버튼 */}
       <View style={styles.footer}>
         <LinearGradient
           colors={['#2563eb', '#1e40af']}

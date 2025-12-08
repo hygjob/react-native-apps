@@ -1,3 +1,6 @@
+// BookingScreen.js
+// 예약 화면 - 사용자가 자동차 예약 정보(날짜, 위치, 연락처 등)를 입력하는 화면
+
 import React, { useState } from 'react';
 import {
   View,
@@ -12,14 +15,18 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 
 const BookingScreen = ({ route, navigation }) => {
+  // 선택한 자동차 데이터 추출
   const { car } = route.params;
-  const [pickupDate, setPickupDate] = useState('');
-  const [returnDate, setReturnDate] = useState('');
-  const [pickupLocation, setPickupLocation] = useState('');
-  const [customerName, setCustomerName] = useState('');
-  const [customerEmail, setCustomerEmail] = useState('');
-  const [customerPhone, setCustomerPhone] = useState('');
 
+  // 예약 정보 상태 관리
+  const [pickupDate, setPickupDate] = useState(''); // 픽업 날짜
+  const [returnDate, setReturnDate] = useState(''); // 반환 날짜
+  const [pickupLocation, setPickupLocation] = useState(''); // 픽업 위치
+  const [customerName, setCustomerName] = useState(''); // 고객 이름
+  const [customerEmail, setCustomerEmail] = useState(''); // 고객 이메일
+  const [customerPhone, setCustomerPhone] = useState(''); // 고객 전화번호
+
+  // 픽업과 반환 날짜 사이의 일수 계산
   const calculateDays = () => {
     if (pickupDate && returnDate) {
       const start = new Date(pickupDate);
@@ -31,24 +38,29 @@ const BookingScreen = ({ route, navigation }) => {
     return 0;
   };
 
+  // 총 가격 계산 = 일수 × 일일 가격
   const calculateTotal = () => {
     const days = calculateDays();
     return days * car.price;
   };
 
+  // 예약 확인 핸들러 - 모든 필드를 검증하고 예약 생성
   const handleConfirmBooking = () => {
+    // 모든 필드가 입력되었는지 확인
     if (!pickupDate || !returnDate || !pickupLocation || !customerName || !customerEmail || !customerPhone) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
+    // 반환 날짜가 픽업 날짜보다 뒤에 있는지 확인
     if (calculateDays() <= 0) {
       Alert.alert('Error', 'Return date must be after pickup date');
       return;
     }
 
+    // 예약 객체 생성
     const booking = {
-      id: Date.now().toString(),
+      id: Date.now().toString(), // 고유 ID
       car: car,
       pickupDate,
       returnDate,
@@ -56,12 +68,13 @@ const BookingScreen = ({ route, navigation }) => {
       customerName,
       customerEmail,
       customerPhone,
-      totalPrice: calculateTotal(),
-      days: calculateDays(),
-      status: 'Confirmed',
-      bookingDate: new Date().toISOString(),
+      totalPrice: calculateTotal(), // 총 가격
+      days: calculateDays(), // 렌탈 일수
+      status: 'Confirmed', // 예약 상태
+      bookingDate: new Date().toISOString(), // 예약 시간
     };
 
+    // 확인 알림 표시
     Alert.alert(
       'Booking Confirmed!',
       `Your booking for ${car.name} has been confirmed. Total: $${calculateTotal()}`,
@@ -69,6 +82,7 @@ const BookingScreen = ({ route, navigation }) => {
         {
           text: 'OK',
           onPress: () => {
+            // 예약 이력 화면으로 이동하면서 새 예약 데이터 전달
             navigation.navigate('BookingsHistory', { newBooking: booking });
           },
         },
@@ -80,12 +94,14 @@ const BookingScreen = ({ route, navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.content}>
+          {/* 선택된 자동차 정보 표시 */}
           <View style={styles.carInfo}>
             <Text style={styles.carName}>{car.name}</Text>
             <Text style={styles.carType}>{car.type}</Text>
             <Text style={styles.pricePerDay}>${car.price} per day</Text>
           </View>
 
+          {/* 예약 정보 입력 폼 */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Booking Details</Text>
 

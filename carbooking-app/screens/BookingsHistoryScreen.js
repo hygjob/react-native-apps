@@ -1,3 +1,5 @@
+// BookingsHistoryScreen.js
+// 예약 이력 화면 - 사용자의 모든 자동차 예약 내역을 표시합니다.
 import React, { useState, useEffect } from 'react';
 import {
   View,
@@ -10,14 +12,16 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 
 const BookingsHistoryScreen = ({ route, navigation }) => {
+  // 예약 목록 상태 관리
   const [bookings, setBookings] = useState([]);
-
+  // 새로운 예약이 추가될 때마다 업데이트
   useEffect(() => {
     if (route.params?.newBooking) {
       setBookings((prev) => [route.params.newBooking, ...prev]);
     }
   }, [route.params?.newBooking]);
 
+  // 날짜 포맷 함수 - ISO 문자열을 읽기 쉬운 형식으로 변환
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -27,14 +31,17 @@ const BookingsHistoryScreen = ({ route, navigation }) => {
     });
   };
 
+  // 개별 예약 항목 렌더링 함수
   const renderBookingItem = ({ item }) => {
     return (
       <View style={styles.bookingCard}>
+        {/* 예약 헤더 - 자동차 정보 */}
         <View style={styles.bookingHeader}>
           <View>
             <Text style={styles.carName}>{item.car.name}</Text>
             <Text style={styles.carType}>{item.car.type}</Text>
           </View>
+          {/* 예약 상태 배지 */}
           <View
             style={[
               styles.statusBadge,
@@ -44,26 +51,31 @@ const BookingsHistoryScreen = ({ route, navigation }) => {
             <Text style={styles.statusText}>{item.status}</Text>
           </View>
         </View>
-
+        {/* 예약 상세 정보 */}
         <View style={styles.bookingDetails}>
+          {/* 픽업 날짜 */}
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Pickup:</Text>
             <Text style={styles.detailValue}>{formatDate(item.pickupDate)}</Text>
           </View>
+          {/* 반환 날짜 */}
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Return:</Text>
             <Text style={styles.detailValue}>{formatDate(item.returnDate)}</Text>
           </View>
+          {/* 픽업 위치 */}
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Location:</Text>
             <Text style={styles.detailValue}>{item.pickupLocation}</Text>
           </View>
+          {/* 렌탈 기간 */}
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Duration:</Text>
             <Text style={styles.detailValue}>{item.days} days</Text>
           </View>
         </View>
 
+        {/* 예약 금액 및 자동차 상세보기 버튼 */}
         <View style={styles.bookingFooter}>
           <View>
             <Text style={styles.totalLabel}>Total Amount</Text>
@@ -82,6 +94,7 @@ const BookingsHistoryScreen = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* 헤더 섹션 */}
       <LinearGradient
         colors={['#2563eb', '#1e40af']}
         style={styles.header}
@@ -92,6 +105,7 @@ const BookingsHistoryScreen = ({ route, navigation }) => {
         </Text>
       </LinearGradient>
 
+      {/* 예약이 없을 경우 빈 상태 표시 */}
       {bookings.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Text style={styles.emptyIcon}>🚗</Text>

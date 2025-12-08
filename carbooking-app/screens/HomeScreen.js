@@ -13,14 +13,19 @@ import CarCard from '../components/CarCard';
 import { cars } from '../data/cars';
 
 const HomeScreen = ({ navigation }) => {
+  // 검색 입력 상태 관리
   const [searchQuery, setSearchQuery] = useState('');
+  // 필터링된 자동차 목록 상태 관리
   const [filteredCars, setFilteredCars] = useState(cars);
 
+  // 검색 기능 핸들러 - 자동차 이름이나 종류로 필터링
   const handleSearch = (text) => {
     setSearchQuery(text);
+    // 검색어가 비어있으면 전체 리스트 표시
     if (text.trim() === '') {
       setFilteredCars(cars);
     } else {
+      // 자동차 이름이나 종류에 검색어가 포함되면 필터링
       const filtered = cars.filter(
         (car) =>
           car.name.toLowerCase().includes(text.toLowerCase()) ||
@@ -36,11 +41,13 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* 헤더 섹션 - 제목과 검색창 포함 */}
       <LinearGradient
         colors={['#2563eb', '#1e40af']}
         style={styles.header}
       >
         <Text style={styles.headerTitle}>Find Your Perfect Ride</Text>
+        {/* 검색 입력창 */}
         <TextInput
           style={styles.searchInput}
           placeholder="Search cars..."
@@ -51,10 +58,12 @@ const HomeScreen = ({ navigation }) => {
       </LinearGradient>
 
       <View style={styles.content}>
+        {/* 액션 섹션 - 사용 가능한 자동차 수와 예약 이력 버튼 */}
         <View style={styles.headerActions}>
           <Text style={styles.sectionTitle}>
             {filteredCars.length} Cars Available
           </Text>
+          {/* 예약 이력 화면으로 이동하는 버튼 */}
           <TouchableOpacity
             onPress={() => navigation.navigate('BookingsHistory')}
             style={styles.historyButton}
@@ -63,6 +72,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
+        {/* 자동차 목록 - FlatList를 사용하여 효율적으로 렌더링 */}
         <FlatList
           data={filteredCars}
           keyExtractor={(item) => item.id}

@@ -1,4 +1,7 @@
-import React from 'react';
+// CarCard.js
+// 홈 화면의 자동차 목록에 표시되는 개별 자동차 카드 컴포넌트
+// 자동차 이미지, 정보, 가격, 특징을 카드 형식으로 표시합니다.
+
 import {
   View,
   Text,
@@ -8,25 +11,33 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+// 자동차 카드 컴포넌트
+// Props: car(자동차 데이터), onPress(카드 클릭 이벤트)
 const CarCard = ({ car, onPress }) => {
   return (
+    // 터치 가능한 컨테이너 - 카드를 탭하면 onPress 콜백 실행
     <TouchableOpacity
       style={styles.card}
       onPress={onPress}
       activeOpacity={0.8}
     >
+      {/* 자동차 이미지 */}
       <Image source={{ uri: car.image }} style={styles.carImage} />
       <View style={styles.cardContent}>
+
         <View style={styles.cardHeader}>
+          {/* 자동차 이름과 등급 */}
           <View>
             <Text style={styles.carName}>{car.name}</Text>
             <Text style={styles.carModel}>{car.model} • {car.type}</Text>
           </View>
+          {/* 별점 */}
           <View style={styles.ratingContainer}>
             <Text style={styles.rating}>⭐ {car.rating}</Text>
           </View>
         </View>
 
+        {/* 주요 기능 태그 (처음 3개만 표시) */}
         <View style={styles.featuresContainer}>
           {car.features.slice(0, 3).map((feature, index) => (
             <View key={index} style={styles.featureTag}>
@@ -35,6 +46,7 @@ const CarCard = ({ car, onPress }) => {
           ))}
         </View>
 
+        {/* 가격 및 상세 보기 버튼 */}
         <View style={styles.cardFooter}>
           <View>
             <Text style={styles.priceLabel}>Price per day</Text>
