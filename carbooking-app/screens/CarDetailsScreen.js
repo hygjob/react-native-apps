@@ -12,12 +12,27 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const CarDetailsScreen = ({ route, navigation }) => {
+/**
+ * 자동차 상세 화면 컴포넌트
+ * 선택한 자동차의 상세 정보를 표시하고 예약 화면으로 이동할 수 있는 화면입니다.
+ * 
+ * @param {Object} route - React Navigation의 route 객체
+ * @param {Object} route.params - 화면 간 전달된 파라미터
+ * @param {Object} route.params.car - 표시할 자동차 데이터 객체
+ * @param {Object} navigation - React Navigation의 navigation 객체
+ * 
+ * @returns {JSX.Element} 자동차 상세 정보와 예약 버튼이 포함된 화면
+ */
+const CarDetailsScreen = ({ route, navigation }) => { // 1) router, navigation 객체를 props로 받음
   // 전달된 자동차 데이터 추출
   const { car } = route.params;
-  // 예약 화면으로 이동하는 핸들러
+  
+  /**
+   * 예약 화면으로 이동하는 핸들러
+   * 현재 자동차 정보를 예약 화면으로 전달합니다.
+   */
   const handleBookNow = () => {
-    navigation.navigate('Booking', { car });
+    navigation.navigate('Booking', { car });   // 2) 예약 화면으로 이동하고 자동차 정보를 전달
   };
 
   return (
@@ -75,7 +90,7 @@ const CarDetailsScreen = ({ route, navigation }) => {
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Features</Text>
             <View style={styles.featuresGrid}>
-              {car.features.map((feature, index) => (
+              {car.features.map((feature, index) => ( // 3) 자동차 특징 목록을 반복하여 표시
                 <View key={index} style={styles.featureItem}>
                   <Text style={styles.featureText}>✓ {feature}</Text>
                 </View>
@@ -90,7 +105,8 @@ const CarDetailsScreen = ({ route, navigation }) => {
           colors={['#2563eb', '#1e40af']}
           style={styles.bookButton}
         >
-          <TouchableOpacity onPress={handleBookNow} style={styles.bookButtonTouch}>
+          {/* 4) 예약 버튼 클릭 시 handleBookNow 함수를 호출 */}
+          <TouchableOpacity onPress={handleBookNow} style={styles.bookButtonTouch}>   
             <Text style={styles.bookButtonText}>Book Now</Text>
           </TouchableOpacity>
         </LinearGradient>
@@ -99,51 +115,62 @@ const CarDetailsScreen = ({ route, navigation }) => {
   );
 };
 
+// 스타일 정의
 const styles = StyleSheet.create({
+  // 화면 전체 컨테이너
   container: {
-    flex: 1,
-    backgroundColor: '#f1f5f9',
+    flex: 1, // 전체 화면 차지
+    backgroundColor: '#f1f5f9', // 연한 회색 배경 (slate-100)
   },
+  // 자동차 이미지
   carImage: {
-    width: '100%',
-    height: 300,
-    resizeMode: 'cover',
+    width: '100%', // 전체 너비
+    height: 300, // 고정 높이 300px
+    resizeMode: 'cover', // 이미지를 영역에 맞춰 잘라서 채움
   },
+  // 내용 영역
   content: {
-    padding: 20,
+    padding: 20, // 내부 여백
   },
+  // 헤더 영역 (자동차 이름과 평점)
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 20,
+    flexDirection: 'row', // 가로 방향 배치
+    justifyContent: 'space-between', // 양쪽 끝에 배치
+    alignItems: 'flex-start', // 상단 정렬
+    marginBottom: 20, // 하단 여백
   },
+  // 자동차 이름 텍스트
   carName: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#1e293b',
-    marginBottom: 5,
+    fontSize: 28, // 매우 큰 글씨
+    fontWeight: 'bold', // 굵은 글씨
+    color: '#1e293b', // 어두운 회색 (slate-800)
+    marginBottom: 5, // 하단 여백
   },
+  // 자동차 모델/타입 텍스트
   carModel: {
-    fontSize: 16,
-    color: '#64748b',
+    fontSize: 16, // 중간 글씨
+    color: '#64748b', // 회색 (slate-500)
   },
+  // 평점 컨테이너 (배지 형태)
   ratingContainer: {
-    backgroundColor: '#fef3c7',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 12,
+    backgroundColor: '#fef3c7', // 연한 노란색 배경 (yellow-100)
+    paddingHorizontal: 12, // 좌우 패딩
+    paddingVertical: 6, // 상하 패딩
+    borderRadius: 12, // 둥근 모서리
   },
+  // 평점 텍스트
   rating: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#92400e',
+    fontSize: 16, // 중간 글씨
+    fontWeight: '600', // 세미볼드
+    color: '#92400e', // 갈색 (yellow-800)
   },
+  // 가격 정보 컨테이너
   priceContainer: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 20,
+    backgroundColor: '#fff', // 흰색 배경
+    padding: 20, // 내부 여백
+    borderRadius: 12, // 둥근 모서리
+    marginBottom: 20, // 하단 여백
+    // iOS 그림자 효과
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -151,85 +178,101 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 4,
+    // Android 그림자 효과
     elevation: 3,
   },
+  // 가격 라벨
   priceLabel: {
-    fontSize: 14,
-    color: '#64748b',
-    marginBottom: 5,
+    fontSize: 14, // 작은 글씨
+    color: '#64748b', // 회색 (slate-500)
+    marginBottom: 5, // 하단 여백
   },
+  // 가격 값
   price: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: '#2563eb',
+    fontSize: 32, // 매우 큰 글씨
+    fontWeight: 'bold', // 굵은 글씨
+    color: '#2563eb', // 파란색 (blue-600)
   },
+  // 섹션 컨테이너 (설명, 사양, 특징 등)
   section: {
-    marginBottom: 25,
+    marginBottom: 25, // 하단 여백
   },
+  // 섹션 제목
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#1e293b',
-    marginBottom: 12,
+    fontSize: 20, // 큰 글씨
+    fontWeight: 'bold', // 굵은 글씨
+    color: '#1e293b', // 어두운 회색
+    marginBottom: 12, // 하단 여백
   },
+  // 설명 텍스트
   description: {
-    fontSize: 16,
-    color: '#475569',
-    lineHeight: 24,
+    fontSize: 16, // 중간 글씨
+    color: '#475569', // 회색 (slate-600)
+    lineHeight: 24, // 줄 간격 (가독성 향상)
   },
+  // 사양 행 (라벨과 값)
   specRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    flexDirection: 'row', // 가로 방향 배치
+    justifyContent: 'space-between', // 양쪽 끝에 배치
+    paddingVertical: 10, // 상하 패딩
+    borderBottomWidth: 1, // 하단 테두리
+    borderBottomColor: '#e2e8f0', // 연한 회색 테두리 (slate-200)
   },
+  // 사양 라벨
   specLabel: {
-    fontSize: 16,
-    color: '#64748b',
-    fontWeight: '500',
+    fontSize: 16, // 중간 글씨
+    color: '#64748b', // 회색 (slate-500)
+    fontWeight: '500', // 미디엄 굵기
   },
+  // 사양 값
   specValue: {
-    fontSize: 16,
-    color: '#1e293b',
-    fontWeight: '600',
+    fontSize: 16, // 중간 글씨
+    color: '#1e293b', // 어두운 회색
+    fontWeight: '600', // 세미볼드
   },
+  // 특징 그리드 컨테이너
   featuresGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: 'row', // 가로 방향 배치
+    flexWrap: 'wrap', // 공간 부족 시 다음 줄로 넘김
   },
+  // 개별 특징 아이템
   featureItem: {
-    backgroundColor: '#e0e7ff',
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    borderRadius: 10,
-    marginRight: 10,
-    marginBottom: 10,
+    backgroundColor: '#e0e7ff', // 연한 파란색 배경 (indigo-100)
+    paddingHorizontal: 15, // 좌우 패딩
+    paddingVertical: 10, // 상하 패딩
+    borderRadius: 10, // 둥근 모서리
+    marginRight: 10, // 오른쪽 여백
+    marginBottom: 10, // 하단 여백
   },
+  // 특징 텍스트
   featureText: {
-    fontSize: 14,
-    color: '#4338ca',
-    fontWeight: '500',
+    fontSize: 14, // 작은 글씨
+    color: '#4338ca', // 진한 파란색 (indigo-700)
+    fontWeight: '500', // 미디엄 굵기
   },
+  // 하단 푸터 (예약 버튼 영역)
   footer: {
-    padding: 20,
-    paddingBottom: 30,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
+    padding: 20, // 내부 여백
+    paddingBottom: 30, // 하단 여백 (더 넓게)
+    backgroundColor: '#fff', // 흰색 배경
+    borderTopWidth: 1, // 상단 테두리
+    borderTopColor: '#e2e8f0', // 연한 회색 테두리
   },
+  // 예약 버튼 (LinearGradient 컨테이너)
   bookButton: {
-    borderRadius: 12,
-    overflow: 'hidden',
+    borderRadius: 12, // 둥근 모서리
+    overflow: 'hidden', // 자식 요소가 경계를 넘지 않도록
   },
+  // 예약 버튼 터치 영역
   bookButtonTouch: {
-    paddingVertical: 16,
-    alignItems: 'center',
+    paddingVertical: 16, // 상하 패딩
+    alignItems: 'center', // 중앙 정렬
   },
+  // 예약 버튼 텍스트
   bookButtonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: '#fff', // 흰색 텍스트
+    fontSize: 18, // 큰 글씨
+    fontWeight: 'bold', // 굵은 글씨
   },
 });
 
