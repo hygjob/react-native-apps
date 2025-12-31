@@ -8,6 +8,9 @@ import Slider from '@react-native-community/slider'; // 재생 위치 조절을 
 import { Ionicons } from '@expo/vector-icons'; // 아이콘 사용
 import { StatusBar } from 'expo-status-bar';
 
+
+
+
 export default function App() {
   // 1) 상태 관리 변수들
   const [sound, setSound] = useState(null); // 현재 재생 중인 오디오 객체
